@@ -1,5 +1,7 @@
 import './app.css';
 import StartScreen from './components/start-screen/StartScreen';
+import Game from './components/game/Game'
+import GameOver from './components/game-over/GameOver';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { wordsList } from './data/words'
 
@@ -16,8 +18,8 @@ export function App() {
   return (
     <div className="App">
       {gameStage === 'start' && <StartScreen />}
-      {gameStage === 'game' && <StartScreen />}
-      {gameStage === 'end' && <StartScreen />}
+      {gameStage === 'game' && <Game />}
+      {gameStage === 'end' && <GameOver />}
     </div>
   )
 }
