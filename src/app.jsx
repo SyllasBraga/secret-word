@@ -13,19 +13,41 @@ const stages = [
 
 export function App() {
 
-  const [gameStage, setGameStage] = useState(stages[0].name)
-  const [words] = useState(wordsList)
+  const [gameStage, setGameStage] = useState(stages[0].name);
+  const [words] = useState(wordsList);
+
+  const [pickedWord, setPickWord] = useState('');
+  const [pickedCategory, setPickedCategory] = useState('');
+  const [letters, setLetters] = useState([]);
+
+  const pickWordAndCategory = () => {
+    const categories = Object.keys(words);
+    const category = categories[Math.floor(Math.random() * Object.keys(categories).length)];
+
+    const word = words[category][Math.floor(Math.random() * words[category].length)];
+
+    return { word, category };
+  }
 
   const startGame = () => {
-    setGameStage(stages[1].name)
+    const { word, category } = pickWordAndCategory();
+
+    let wordLetters = word.split("");
+
+    wordLetters = wordLetters.map((l) => l.toLowerCase());
+
+    setPickWord(word);
+    setPickedCategory(category);
+    setLetters(wordLetters);
+    setGameStage(stages[1].name);
   }
 
   const verifyLetter = () => {
-    setGameStage(stages[2].name)
+    setGameStage(stages[2].name);
   }
 
   const retry = () => {
-    setGameStage(stages[0].name)
+    setGameStage(stages[0].name);
   }
 
   return (
