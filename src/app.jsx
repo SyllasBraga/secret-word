@@ -20,6 +20,11 @@ export function App() {
   const [pickedCategory, setPickedCategory] = useState('');
   const [letters, setLetters] = useState([]);
 
+  const [guessedLetters, setGuessesLetters] = useState([]);
+  const [wrongLetters, setWrongLetters] = useState([]);
+  const [guesses, setGuesses] = useState(3);
+  const [score, setScore] = useState(0);
+
   const pickWordAndCategory = () => {
     const categories = Object.keys(words);
     const category = categories[Math.floor(Math.random() * Object.keys(categories).length)];
@@ -33,7 +38,6 @@ export function App() {
     const { word, category } = pickWordAndCategory();
 
     let wordLetters = word.split("");
-
     wordLetters = wordLetters.map((l) => l.toLowerCase());
 
     setPickWord(word);
@@ -42,9 +46,28 @@ export function App() {
     setGameStage(stages[1].name);
   }
 
-  const verifyLetter = () => {
-    setGameStage(stages[2].name);
+  const verifyLetter = (letter) => {
+    const normalizedLetter = letter.toLowerCase();
+
+    if (guessedLetters.includes(normalizedLetter) || wrongLetters.includes(normalizedLetter)) {
+      return;
+    }
+
+    if (letters.includes(normalizedLetter)) {
+      setGuessesLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters,
+        normalizedLetter
+      ])
+    } else {
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters,
+        normalizedLetter
+      ])
+    }
   }
+
+  console.log(guessedLetters);
+  console.log(wrongLetters);
 
   const retry = () => {
     setGameStage(stages[0].name);
@@ -53,7 +76,16 @@ export function App() {
   return (
     <div className="App">
       {gameStage === 'start' && <StartScreen startGame={startGame} />}
-      {gameStage === 'game' && <Game verifyLetter={verifyLetter} />}
+      {
+        gameStage === 'game' && <Game
+          verifyLetter={verifyLetter}
+          pickedWord={pickedWord}
+          pickedCategory={pickedCategory}
+          letters={letters} guessedLetter={guessedLetters}
+          wrongLetters={wrongLetters}
+          guesses={guesses}
+          score={score} />
+      }
       {gameStage === 'end' && <GameOver retry={retry} />}
     </div>
   )
