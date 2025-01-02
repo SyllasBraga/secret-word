@@ -25,7 +25,7 @@ export function App() {
   const [guessedLetters, setGuessesLetters] = useState([]);
   const [wrongLetters, setWrongLetters] = useState([]);
   const [guesses, setGuesses] = useState(guessesQtd);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(500);
 
   const pickWordAndCategory = () => {
     const categories = Object.keys(words);
@@ -100,7 +100,7 @@ export function App() {
           guesses={guesses}
           score={score} />
       }
-      {gameStage === 'end' && <GameOver retry={retry} />}
+      {gameStage === 'end' && <GameOver retry={retry} score={score} />}
     </div>
   )
 }
